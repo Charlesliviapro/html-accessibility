@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessible HTML Example - Demonstrating Web Accessibility Best Practices</title>
+    <style>
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+
+        /* Skip to content link - Hidden by default, visible on focus */
+        .skip-to-content {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #000;
+            color: #fff;
+            padding: 8px 16px;
+            text-decoration: none;
+            z-index: 100;
+            border-radius: 0 0 4px 0;
+        }
+
+        .skip-to-content:focus {
+            top: 0;
+            outline: 3px solid #ff6b6b;
+            outline-offset: 2px;
+        }
+
+        /* Visible focus states throughout the page */
+        a:focus,
+        button:focus,
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: 3px solid #007bff;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+        }
+
+        /* Header styles */
+        header {
+            background: #333;
+            color: #fff;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+        }
+
+        /* Navigation */
+        nav {
+            background: #444;
+            padding: 0.5rem 0;
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 12px;
+            display: block;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        nav a:hover {
+            background: #555;
+        }
+
+        nav a:focus {
+            background: #555;
+        }
+
+        /* Main content */
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 20px;
+        }
+
+        .container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        /* Image gallery */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 2rem 0;
+        }
+
+        .image-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .image-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .image-caption {
+            padding: 1rem;
+            background: #f9f9f9;
+        }
+
+        /* Form styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:hover,
+        input[type="email"]:hover,
+        textarea:hover,
+        select:hover {
+            border-color: #007bff;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .required {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+
+        /* Button styles */
+        .btn {
+            background: #007bff;
+            color: #fff;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Keyboard navigation demo */
+        .keyboard-demo {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .keyboard-demo button {
+            padding: 10px 20px;
+            background: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .keyboard-demo button:hover {
+            background: #218838;
+        }
+
+        /* Alert box */
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+            border-left: 4px solid;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            border-color: #0c5460;
+            color: #0c5460;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border-color: #155724;
+            color: #155724;
+        }
+
+        /* Footer */
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        footer a {
+            color: #007bff;
+        }
+
+        /* Utility classes */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .image-gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip to content link for keyboard users -->
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
+    <!-- Header with semantic HTML and ARIA landmark -->
+    <header role="banner">
+        <div class="container">
+            <h1>Accessible HTML Example</h1>
+            <p>Demonstrating Web Accessibility Best Practices</p>
+        </div>
+    </header>
+
+    <!-- Navigation with ARIA landmark -->
+    <nav role="navigation" aria-label="Main navigation">
+        <div class="container">
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#images">Image Gallery</a></li>
+                <li><a href="#keyboard">Keyboard Navigation</a></li>
+                <li><a href="#form">Contact Form</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main content with ID for skip link and ARIA landmark -->
+    <main id="main-content" role="main">
+        <!-- About section -->
+        <section id="about" class="container" aria-labelledby="about-heading">
+            <h2 id="about-heading" tabindex="-1">About Web Accessibility</h2>
+            <p>
+                Web accessibility ensures that websites, tools, and technologies are designed and developed 
+                so that people with disabilities can use them. This includes the ability to perceive, 
+                understand, navigate, and interact with the web.
+            </p>
+            <div class="alert alert-info" role="alert">
+                <strong>Important:</strong> This page demonstrates various accessibility features including 
+                alt text, skip navigation, ARIA roles, keyboard navigation, and visible focus states.
+            </div>
+        </section>
+
+        <!-- Image gallery section with alt text -->
+        <section id="images" class="container" aria-labelledby="images-heading">
+            <h2 id="images-heading">Image Gallery with Alt Text</h2>
+            <p>All images below include descriptive alt text for screen readers:</p>
+            
+            <div class="image-gallery">
+                <figure class="image-item">
+                    <img src="https://via.placeholder.com/400x300/007bff/ffffff?text=Mountain+Landscape" 
+                         alt="Beautiful mountain landscape with snow-capped peaks against a blue sky">
+                    <figcaption class="image-caption">
+                        <strong>Mountain Landscape</strong><br>
+                        A serene view of majestic mountains
+                    </figcaption>
+                </figure>
+
+                <figure class="image-item">
+                    <img src="https://via.placeholder.com/400x300/28a745/ffffff?text=Forest+Path" 
+                         alt="Peaceful forest path winding through tall trees with dappled sunlight">
+                    <figcaption class="image-caption">
+                        <strong>Forest Path</strong><br>
+                        A tranquil walk through nature
+                    </figcaption>
+                </figure>
+
+                <figure class="image-item">
+                    <img src="https://via.placeholder.com/400x300/ffc107/333333?text=Ocean+Sunset" 
+                         alt="Vibrant orange and pink sunset over calm ocean waters">
+                    <figcaption class="image-caption">
+                        <strong>Ocean Sunset</strong><br>
+                        A breathtaking coastal view
+                    </figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- Keyboard navigation demonstration -->
+        <section id="keyboard" class="container" aria-labelledby="keyboard-heading">
+            <h2 id="keyboard-heading">Keyboard Navigation Examples</h2>
+            <p>
+                All interactive elements on this page can be accessed using keyboard navigation. 
+                Try using the <kbd>Tab</kbd> key to move forward, <kbd>Shift+Tab</kbd> to move backward, 
+                and <kbd>Enter</kbd> or <kbd>Space</kbd> to activate buttons and links.
+            </p>
+
+            <h3>Interactive Buttons</h3>
+            <p>Notice the visible focus indicators (blue outline) when you tab through these buttons:</p>
+            <div class="keyboard-demo">
+                <button type="button" onclick="showAlert('info', 'You clicked Button 1!')">Button 1</button>
+                <button type="button" onclick="showAlert('info', 'You clicked Button 2!')">Button 2</button>
+                <button type="button" onclick="showAlert('info', 'You clicked Button 3!')">Button 3</button>
+                <button type="button" onclick="showAlert('success', 'Great job with keyboard navigation!')">Button 4</button>
+            </div>
+
+            <div id="alert-container" role="status" aria-live="polite"></div>
+
+            <h3>Custom Widget with ARIA</h3>
+            <p>Example of a custom accordion with proper ARIA attributes:</p>
+            <div class="accordion">
+                <h3>
+                    <button type="button" 
+                            aria-expanded="false" 
+                            aria-controls="accordion-content-1" 
+                            id="accordion-button-1"
+                            onclick="toggleAccordion('1')">
+                        What is ARIA?
+                    </button>
+                </h3>
+                <div id="accordion-content-1" role="region" aria-labelledby="accordion-button-1" hidden>
+                    <p style="padding: 1rem; background: #f9f9f9; border-radius: 4px; margin-top: 0.5rem;">
+                        ARIA (Accessible Rich Internet Applications) is a set of attributes that define ways 
+                        to make web content and web applications more accessible to people with disabilities.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact form with proper labels and ARIA -->
+        <section id="form" class="container" aria-labelledby="form-heading">
+            <h2 id="form-heading">Accessible Contact Form</h2>
+            <p>This form demonstrates proper labeling, required field indicators, and keyboard accessibility:</p>
+
+            <form onsubmit="handleSubmit(event)" novalidate>
+                <div class="form-group">
+                    <label for="name">
+                        Name <span class="required" aria-label="required">*</span>
+                    </label>
+                    <input type="text" 
+                           id="name" 
+                           name="name" 
+                           required 
+                           aria-required="true"
+                           aria-describedby="name-hint">
+                    <small id="name-hint" style="display: block; margin-top: 0.25rem; color: #666;">
+                        Please enter your full name
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">
+                        Email <span class="required" aria-label="required">*</span>
+                    </label>
+                    <input type="email" 
+                           id="email" 
+                           name="email" 
+                           required 
+                           aria-required="true"
+                           aria-describedby="email-hint">
+                    <small id="email-hint" style="display: block; margin-top: 0.25rem; color: #666;">
+                        We'll never share your email with anyone else
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">
+                        Subject <span class="required" aria-label="required">*</span>
+                    </label>
+                    <select id="subject" 
+                            name="subject" 
+                            required 
+                            aria-required="true">
+                        <option value="">Please select a subject</option>
+                        <option value="feedback">Feedback</option>
+                        <option value="question">Question</option>
+                        <option value="accessibility">Accessibility Issue</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">
+                        Message <span class="required" aria-label="required">*</span>
+                    </label>
+                    <textarea id="message" 
+                              name="message" 
+                              required 
+                              aria-required="true"
+                              aria-describedby="message-hint"></textarea>
+                    <small id="message-hint" style="display: block; margin-top: 0.25rem; color: #666;">
+                        Please provide as much detail as possible
+                    </small>
+                </div>
+
+                <button type="submit" class="btn">Submit Form</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer with ARIA landmark -->
+    <footer role="contentinfo">
+        <div class="container">
+            <p>&copy; 2024 Accessible HTML Example. Created to demonstrate web accessibility best practices.</p>
+            <p>
+                <a href="https://www.w3.org/WAI/WCAG21/quickref/" target="_blank" rel="noopener noreferrer">
+                    WCAG 2.1 Quick Reference
+                </a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Function to show alerts
+        function showAlert(type, message) {
+            const container = document.getElementById('alert-container');
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-info';
+            container.innerHTML = `<div class="alert ${alertClass}" role="alert">${message}</div>`;
+            
+            // Auto-remove after 3 seconds
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 3000);
+        }
+
+        // Accordion toggle function
+        function toggleAccordion(id) {
+            const button = document.getElementById('accordion-button-' + id);
+            const content = document.getElementById('accordion-content-' + id);
+            const isExpanded = button.getAttribute('aria-expanded') === 'true';
+            
+            button.setAttribute('aria-expanded', !isExpanded);
+            content.hidden = isExpanded;
+        }
+
+        // Form submission handler
+        function handleSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            
+            // Basic validation
+            if (!form.checkValidity()) {
+                showAlert('info', 'Please fill in all required fields.');
+                return;
+            }
+            
+            showAlert('success', 'Form submitted successfully! (This is a demo, no data was actually sent.)');
+            form.reset();
+        }
+
+        // Keyboard shortcut example (optional enhancement)
+        document.addEventListener('keydown', function(event) {
+            // Alt + H to focus on main heading
+            if (event.altKey && event.key === 'h') {
+                event.preventDefault();
+                document.getElementById('about-heading').focus();
+            }
+        });
+    </script>
+</body>
+</html>
